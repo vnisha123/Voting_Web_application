@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voting Poll</title>
+    <link rel="stylesheet" href="{% static 'polls.css' %}">
+</head>
+<body>
+    
+  {% for choices_list in choices_lists %}
+
+      <div id='form'>
+      {% csrf_token %}
+      <h1>Poll</h1>
+      <input type="text" id="question" name="question_text" value="{{ choices_list.question.question_text }}" readonly>
+      <br>
+      <label for="options">Options:</label>
+      <div id="options-container">
+          {% for choice in choices_list.choices %}
+            <form action="{% url 'send_vote' choiceoption=choice.option %}" method="POST">
+              {% csrf_token %}
+              <button type="submit" class="options" name="choiceoption" value="{{ choice.option }}" required>{{ choice.option }}</button>
+            </form>
+          {% endfor %}
+          </div>
+        </div>
+  
+{% endfor %}
+
+
+</body>
+</html>
